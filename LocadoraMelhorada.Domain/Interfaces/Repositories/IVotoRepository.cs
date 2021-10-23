@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace LocadoraMelhorada.Domain.Interfaces.Repositories
 {
-    public interface IVotoRepository<IdType>
+    public interface IVotoRepository<IdType> where IdType : struct
     {
-        long Inserir(Voto voto);
+        IdType Inserir(Voto voto);
 
         void Excluir(IdType id);
 

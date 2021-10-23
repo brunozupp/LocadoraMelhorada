@@ -50,12 +50,6 @@ namespace LocadoraMelhorada.Domain.Handlers
             if (!_votoRepository.CheckId(command.Id))
                 return new VotoCommandResult(false, "Este voto não existe", command.Notifications);
 
-            if (!_filmeRepository.CheckId(command.Id))
-                return new VotoCommandResult(false, "Este filme não existe", command.Notifications);
-
-            if (!_usuarioRepository.CheckId(command.Id))
-                return new VotoCommandResult(false, "Este usuário não existe", command.Notifications);
-
             _votoRepository.Excluir(command.Id);
 
             return new VotoCommandResult(true, "Voto excluído com sucesso!", new

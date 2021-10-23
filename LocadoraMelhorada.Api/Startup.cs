@@ -1,3 +1,7 @@
+using ElmahCore;
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
+using LocadoraMelhorada.Api.Middlewares;
 using LocadoraMelhorada.Domain.Handlers;
 using LocadoraMelhorada.Domain.Interfaces.Repositories;
 using LocadoraMelhorada.Infra.Data.DataContexts;
@@ -49,9 +53,9 @@ namespace LocadoraMelhorada.Api
 
             #region Repositories
 
-            services.AddScoped<IUsuarioRepository<long>, UsuarioRepository>();
-            services.AddScoped<IFilmeRepository<long>, FilmeRepository>();
-            services.AddScoped<IVotoRepository<long>, VotoRepository>();
+            services.AddScoped(typeof(IUsuarioRepository<>), typeof(UsuarioRepository<>));
+            services.AddScoped(typeof(IFilmeRepository<>), typeof(FilmeRepository<>));
+            services.AddScoped(typeof(IVotoRepository<>), typeof(VotoRepository<>));
 
             #endregion
 
@@ -63,6 +67,18 @@ namespace LocadoraMelhorada.Api
             services.AddScoped<AutenticacaoHandler>();
 
             #endregion
+
+            services.AddElmah();
+
+            services.AddElmah<XmlFileErrorLog>(options =>
+            {
+                options.LogPath = "~/log";
+            });
+
+            services.AddElmah<SqlErrorLog>(options =>
+            {
+                options.ConnectionString = sqlServerSettings.ConnectionString;
+            });
 
             services.AddControllers();
 
@@ -143,6 +159,10 @@ namespace LocadoraMelhorada.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseElmah();
 
             app.UseEndpoints(endpoints =>
             {

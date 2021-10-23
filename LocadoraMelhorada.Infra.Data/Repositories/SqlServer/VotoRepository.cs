@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
 {
-    public class VotoRepository : IVotoRepository<long>
+    public class VotoRepository<IdType> : IVotoRepository<IdType> where IdType : struct
     {
         private readonly DynamicParameters _parameters = new DynamicParameters();
         private readonly SqlServerDataContext _dataContext;
@@ -20,32 +20,32 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
             _dataContext = dataContext;
         }
 
-        public bool CheckId(long id)
+        public bool CheckId(IdType id)
         {
-            _parameters.Add("Id", id, DbType.Int64);
+            _parameters.Add("Id", id);
 
             return _dataContext.SqlServerConexao.Query<bool>(VotoQueries.CheckId, _parameters).FirstOrDefault();
         }
 
-        public void Excluir(long id)
+        public void Excluir(IdType id)
         {
-            _parameters.Add("Id", id, DbType.Int64);
+            _parameters.Add("Id", id);
 
             _dataContext.SqlServerConexao.Execute(VotoQueries.Excluir, _parameters);
         }
 
-        public long Inserir(Voto voto)
+        public IdType Inserir(Voto voto)
         {
             _parameters.Add("FilmeId", voto.FilmeId, DbType.Int64);
             _parameters.Add("UsuarioId", voto.UsuarioId, DbType.Int64);
 
-            return _dataContext.SqlServerConexao.ExecuteScalar<long>(VotoQueries.Inserir, _parameters);
+            return _dataContext.SqlServerConexao.ExecuteScalar<IdType>(VotoQueries.Inserir, _parameters);
         }
 
-        public bool JaFoiVotado(long usuarioId, long filmeId)
+        public bool JaFoiVotado(IdType usuarioId, IdType filmeId)
         {
-            _parameters.Add("UsuarioId", usuarioId, DbType.Int64);
-            _parameters.Add("FilmeId", filmeId, DbType.Int64);
+            _parameters.Add("UsuarioId", usuarioId);
+            _parameters.Add("FilmeId", filmeId);
 
             return _dataContext.SqlServerConexao.Query<bool>(VotoQueries.JaFoiVotado, _parameters).FirstOrDefault();
         }
@@ -65,9 +65,9 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
                     ).ToList();
         }
 
-        public List<VotoDoUsuarioQueryResult> ListarPorUsuario(long usuarioId)
+        public List<VotoDoUsuarioQueryResult> ListarPorUsuario(IdType usuarioId)
         {
-            _parameters.Add("UsuarioId", usuarioId, DbType.Int64);
+            _parameters.Add("UsuarioId", usuarioId);
 
             return _dataContext.SqlServerConexao.Query<VotoDoUsuarioQueryResult, FilmeQueryResult, VotoDoUsuarioQueryResult>(
                 VotoQueries.ListarPorUsuario,

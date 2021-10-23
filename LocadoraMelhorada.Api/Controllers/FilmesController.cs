@@ -2,7 +2,6 @@
 using LocadoraMelhorada.Domain.Handlers;
 using LocadoraMelhorada.Domain.Interfaces.Repositories;
 using LocadoraMelhorada.Domain.Query;
-using LocadoraMelhorada.Infra.Data.Repositories.SqlServer;
 using LocadoraMelhorada.Infra.Interfaces.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace LocadoraMelhorada.Api.Controllers
         private readonly IFilmeRepository<long> _repository;
         private readonly FilmeHandler _handler;
 
-        public FilmesController(FilmeRepository repository, FilmeHandler handler)
+        public FilmesController(IFilmeRepository<long> repository, FilmeHandler handler)
         {
             _repository = repository;
             _handler = handler;

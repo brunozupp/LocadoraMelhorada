@@ -20,12 +20,12 @@ namespace LocadoraMelhorada.Api.Middlewares
         {
             try
             {
-
+                await next(context);
             }
             catch (Exception ex)
             {
 
-                throw ex;
+                await HandleExceptionAsync(context, ex);
             }
         }
 

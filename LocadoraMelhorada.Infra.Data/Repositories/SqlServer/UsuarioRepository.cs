@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
 {
-    public class UsuarioRepository : IUsuarioRepository<long>
+    public class UsuarioRepository<IdType> : IUsuarioRepository<IdType> where IdType : struct
     {
         private readonly DynamicParameters _parameters = new DynamicParameters();
         private readonly SqlServerDataContext _dataContext;
@@ -22,7 +22,7 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
 
         public void Atualizar(Usuario usuario)
         {
-            _parameters.Add("Id", usuario.Id, DbType.Int64);
+            _parameters.Add("Id", usuario.Id);
             _parameters.Add("Nome", usuario.Nome, DbType.String);
             _parameters.Add("Login", usuario.Login, DbType.String);
             _parameters.Add("Senha", usuario.Senha, DbType.String);
@@ -38,27 +38,27 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
             return _dataContext.SqlServerConexao.Query<bool>(UsuarioQueries.Autenticar, _parameters).FirstOrDefault();
         }
 
-        public bool CheckId(long id)
+        public bool CheckId(IdType id)
         {
-            _parameters.Add("Id", id, DbType.Int64);
+            _parameters.Add("Id", id);
 
             return _dataContext.SqlServerConexao.Query<bool>(UsuarioQueries.CheckId, _parameters).FirstOrDefault();
         }
 
-        public void Excluir(long id)
+        public void Excluir(IdType id)
         {
-            _parameters.Add("Id", id, DbType.Int64);
+            _parameters.Add("Id", id);
 
             _dataContext.SqlServerConexao.Execute(UsuarioQueries.Excluir, _parameters);
         }
 
-        public long Inserir(Usuario usuario)
+        public IdType Inserir(Usuario usuario)
         {
             _parameters.Add("Nome", usuario.Nome, DbType.String);
             _parameters.Add("Login", usuario.Login, DbType.String);
             _parameters.Add("Senha", usuario.Senha, DbType.String);
 
-            return _dataContext.SqlServerConexao.ExecuteScalar<long>(UsuarioQueries.Inserir, _parameters);
+            return _dataContext.SqlServerConexao.ExecuteScalar<IdType>(UsuarioQueries.Inserir, _parameters);
         }
 
         public List<UsuarioQueryResult> Listar()
@@ -67,9 +67,9 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
             return usuarios;
         }
 
-        public UsuarioQueryResult Obter(long id)
+        public UsuarioQueryResult Obter(IdType id)
         {
-            _parameters.Add("Id", id, DbType.Int64);
+            _parameters.Add("Id", id);
 
             var usuario = _dataContext.SqlServerConexao.Query<UsuarioQueryResult>(UsuarioQueries.Obter, _parameters).FirstOrDefault();
             return usuario;
