@@ -17,10 +17,10 @@ namespace LocadoraMelhorada.Api.Controllers
     [ApiController]
     public class FilmesController : ControllerBase
     {
-        private readonly IFilmeRepository<long> _repository;
+        private readonly IFilmeRepository<string> _repository;
         private readonly FilmeHandler _handler;
 
-        public FilmesController(IFilmeRepository<long> repository, FilmeHandler handler)
+        public FilmesController(IFilmeRepository<string> repository, FilmeHandler handler)
         {
             _repository = repository;
             _handler = handler;
@@ -33,7 +33,7 @@ namespace LocadoraMelhorada.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public ICommandResult AtualizarFilme([FromRoute] long id, [FromBody] AtualizarFilmeCommand command)
+        public ICommandResult AtualizarFilme([FromRoute] string id, [FromBody] AtualizarFilmeCommand command)
         {
             command.Id = id;
             return _handler.Handle(command);
@@ -41,7 +41,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ICommandResult ExcluirFilme([FromRoute] long id)
+        public ICommandResult ExcluirFilme([FromRoute] string id)
         {
             var command = new ExcluirFilmeCommand() { Id = id };
             return _handler.Handle(command);
@@ -56,7 +56,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public FilmeQueryResult ObterFilme([FromRoute] long id)
+        public FilmeQueryResult ObterFilme([FromRoute] string id)
         {
             return _repository.Obter(id);
         }

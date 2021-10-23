@@ -17,10 +17,10 @@ namespace LocadoraMelhorada.Api.Controllers
     [ApiController]
     public class VotosController : ControllerBase
     {
-        private readonly IVotoRepository<long> _repository;
+        private readonly IVotoRepository<string> _repository;
         private readonly VotoHandler _handler;
 
-        public VotosController(IVotoRepository<long> repository, VotoHandler handler)
+        public VotosController(IVotoRepository<string> repository, VotoHandler handler)
         {
             _repository = repository;
             _handler = handler;
@@ -34,7 +34,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ICommandResult ExcluirVoto([FromRoute] long id)
+        public ICommandResult ExcluirVoto([FromRoute] string id)
         {
             return _handler.Handle(new ExcluirVotoCommand() { Id = id });
         }
@@ -48,7 +48,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpGet]
         [Route("usuarios/{usuarioId}")]
-        public List<VotoDoUsuarioQueryResult> ListarVotosPorUsuario([FromRoute] long usuarioId)
+        public List<VotoDoUsuarioQueryResult> ListarVotosPorUsuario([FromRoute] string usuarioId)
         {
             return _repository.ListarPorUsuario(usuarioId);
         }

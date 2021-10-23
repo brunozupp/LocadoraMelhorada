@@ -2,7 +2,7 @@
 {
     public class VotoQueryResult
     {
-        public long VotoId { get; set; }
+        public string VotoId { get; set; }
 
         public FilmeQueryResult Filme { get; set; }
 

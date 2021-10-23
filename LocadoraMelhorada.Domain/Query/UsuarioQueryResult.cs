@@ -2,7 +2,7 @@
 {
     public class UsuarioQueryResult
     {
-        public long UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
 
         public string Nome { get; set; }
 

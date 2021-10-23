@@ -7,7 +7,7 @@ namespace LocadoraMelhorada.Domain.Commands.Inputs.Filme
     public class AtualizarFilmeCommand : Notifiable<Notification>, ICommandPadrao
     {
         [JsonIgnore]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public string Titulo { get; set; }
 
@@ -15,7 +15,7 @@ namespace LocadoraMelhorada.Domain.Commands.Inputs.Filme
 
         public bool ValidarCommand()
         {
-            if (Id == 0)
+            if (string.IsNullOrWhiteSpace(Id))
                 AddNotification("Id", "Id precisa ser maior que 0");
 
             if (string.IsNullOrWhiteSpace(Titulo))

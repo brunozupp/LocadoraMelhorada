@@ -10,12 +10,12 @@ using System.Linq;
 
 namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
 {
-    public class UsuarioRepository<IdType> : IUsuarioRepository<IdType> where IdType : struct
+    public class UsuarioRepositorySqlServer<IdType> : IUsuarioRepository<IdType> where IdType : struct
     {
         private readonly DynamicParameters _parameters = new DynamicParameters();
         private readonly SqlServerDataContext _dataContext;
 
-        public UsuarioRepository(SqlServerDataContext dataContext)
+        public UsuarioRepositorySqlServer(SqlServerDataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -52,13 +52,15 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
             _dataContext.SqlServerConexao.Execute(UsuarioQueries.Excluir, _parameters);
         }
 
-        public IdType Inserir(Usuario usuario)
+        public Usuario Inserir(Usuario usuario)
         {
             _parameters.Add("Nome", usuario.Nome, DbType.String);
             _parameters.Add("Login", usuario.Login, DbType.String);
             _parameters.Add("Senha", usuario.Senha, DbType.String);
 
-            return _dataContext.SqlServerConexao.ExecuteScalar<IdType>(UsuarioQueries.Inserir, _parameters);
+            _dataContext.SqlServerConexao.ExecuteScalar<IdType>(UsuarioQueries.Inserir, _parameters);
+
+            return usuario;
         }
 
         public List<UsuarioQueryResult> Listar()

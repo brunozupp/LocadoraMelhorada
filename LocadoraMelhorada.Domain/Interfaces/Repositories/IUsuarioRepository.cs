@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace LocadoraMelhorada.Domain.Interfaces.Repositories
 {
-    public interface IUsuarioRepository<IdType> where IdType : struct
+    public interface IUsuarioRepository<IdType> where IdType : notnull
     {
-        IdType Inserir(Usuario usuario);
+        Usuario Inserir(Usuario usuario);
         void Atualizar(Usuario usuario);
         void Excluir(IdType id);
         List<UsuarioQueryResult> Listar();

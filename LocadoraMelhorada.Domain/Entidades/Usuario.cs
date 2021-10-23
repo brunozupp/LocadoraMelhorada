@@ -1,6 +1,6 @@
 ﻿namespace LocadoraMelhorada.Domain.Entidades
 {
-    public class Usuario : EntidadeBase<long>
+    public class Usuario : EntidadeBase<string>
     {
         public string Nome { get; private set; }
 
@@ -15,7 +15,7 @@
             Senha = senha;
         }
 
-        public Usuario(long id, string nome, string login, string senha) : base(id)
+        public Usuario(string id, string nome, string login, string senha) : base(id)
         {
             Nome = nome;
             Login = login;

@@ -8,11 +8,11 @@ namespace LocadoraMelhorada.Domain.Handlers
 {
     public class VotoHandler : ICommandHandler<AdicionarVotoCommand>, ICommandHandler<ExcluirVotoCommand>
     {
-        private readonly IVotoRepository<long> _votoRepository;
-        private readonly IFilmeRepository<long> _filmeRepository;
-        private readonly IUsuarioRepository<long> _usuarioRepository;
+        private readonly IVotoRepository<string> _votoRepository;
+        private readonly IFilmeRepository<string> _filmeRepository;
+        private readonly IUsuarioRepository<string> _usuarioRepository;
 
-        public VotoHandler(IVotoRepository<long> votoRepository, IFilmeRepository<long> filmeRepository, IUsuarioRepository<long> usuarioRepository)
+        public VotoHandler(IVotoRepository<string> votoRepository, IFilmeRepository<string> filmeRepository, IUsuarioRepository<string> usuarioRepository)
         {
             _votoRepository = votoRepository;
             _filmeRepository = filmeRepository;
@@ -35,9 +35,9 @@ namespace LocadoraMelhorada.Domain.Handlers
 
             Voto voto = new Voto(command.UsuarioId, command.FilmeId);
 
-            var id = _votoRepository.Inserir(voto);
-
-            voto.AtualizarId(id);
+            voto = _votoRepository.Inserir(voto);
+            //var id = _votoRepository.Inserir(voto);
+            //voto.AtualizarId(id);
 
             return new VotoCommandResult(true, "Voto computado com sucesso!", voto);
         }

@@ -5,7 +5,7 @@ using LocadoraMelhorada.Api.Middlewares;
 using LocadoraMelhorada.Domain.Handlers;
 using LocadoraMelhorada.Domain.Interfaces.Repositories;
 using LocadoraMelhorada.Infra.Data.DataContexts;
-using LocadoraMelhorada.Infra.Data.Repositories.SqlServer;
+using LocadoraMelhorada.Infra.Data.Repositories.MongoDb;
 using LocadoraMelhorada.Infra.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -43,19 +43,28 @@ namespace LocadoraMelhorada.Api
             Configuration.GetSection("JwtSettings").Bind(jwtSettings);
             services.AddSingleton(jwtSettings);
 
+            MongoDbSettings mongoDbSettings = new MongoDbSettings();
+            Configuration.GetSection("MongoDbSettings").Bind(mongoDbSettings);
+            services.AddSingleton(mongoDbSettings);
+
             #endregion
 
             #region DataContexts
 
             services.AddScoped<SqlServerDataContext>();
+            services.AddScoped<MongoDbDataContext>();
 
             #endregion
 
             #region Repositories
 
-            services.AddScoped(typeof(IUsuarioRepository<>), typeof(UsuarioRepository<>));
-            services.AddScoped(typeof(IFilmeRepository<>), typeof(FilmeRepository<>));
-            services.AddScoped(typeof(IVotoRepository<>), typeof(VotoRepository<>));
+            //services.AddScoped(typeof(IUsuarioRepository<>), typeof(UsuarioRepositorySqlServer<>));
+            //services.AddScoped(typeof(IFilmeRepository<>), typeof(FilmeRepositorySqlServer<>));
+            //services.AddScoped(typeof(IVotoRepository<>), typeof(VotoRepositorySqlServer<>));
+
+            services.AddScoped(typeof(IUsuarioRepository<>), typeof(UsuarioRepositoryMongoDb<>));
+            services.AddScoped(typeof(IFilmeRepository<>), typeof(FilmeRepositoryMongoDb<>));
+            services.AddScoped(typeof(IVotoRepository<>), typeof(VotoRepositoryMongoDb<>));
 
             #endregion
 

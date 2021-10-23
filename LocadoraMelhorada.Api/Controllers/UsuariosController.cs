@@ -17,10 +17,10 @@ namespace LocadoraMelhorada.Api.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUsuarioRepository<long> _repository;
+        private readonly IUsuarioRepository<string> _repository;
         private readonly UsuarioHandler _handler;
 
-        public UsuariosController(IUsuarioRepository<long> repository, UsuarioHandler handler)
+        public UsuariosController(IUsuarioRepository<string> repository, UsuarioHandler handler)
         {
             _repository = repository;
             _handler = handler;
@@ -35,7 +35,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public ICommandResult AtualizarUsuario([FromRoute] long id, [FromBody] AtualizarUsuarioCommand command)
+        public ICommandResult AtualizarUsuario([FromRoute] string id, [FromBody] AtualizarUsuarioCommand command)
         {
             command.Id = id;
             return _handler.Handle(command);
@@ -43,7 +43,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ICommandResult ExcluirUsuario([FromRoute] long id)
+        public ICommandResult ExcluirUsuario([FromRoute] string id)
         {
             var command = new ExcluirUsuarioCommand() { Id = id };
             return _handler.Handle(command);
@@ -57,7 +57,7 @@ namespace LocadoraMelhorada.Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public UsuarioQueryResult ObterUsuario([FromRoute] long id)
+        public UsuarioQueryResult ObterUsuario([FromRoute] string id)
         {
             return _repository.Obter(id);
         }

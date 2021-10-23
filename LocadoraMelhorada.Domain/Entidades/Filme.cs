@@ -1,6 +1,6 @@
 ﻿namespace LocadoraMelhorada.Domain.Entidades
 {
-    public class Filme : EntidadeBase<long>
+    public class Filme : EntidadeBase<string>
     {
         public string Titulo { get; private set; }
 
@@ -12,7 +12,7 @@
             Diretor = diretor;
         }
 
-        public Filme(long id, string titulo, string diretor) : base(id)
+        public Filme(string id, string titulo, string diretor) : base(id)
         {
             Titulo = titulo;
             Diretor = diretor;

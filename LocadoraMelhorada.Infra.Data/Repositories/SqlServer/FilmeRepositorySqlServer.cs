@@ -10,12 +10,12 @@ using System.Linq;
 
 namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
 {
-    public class FilmeRepository<IdType> : IFilmeRepository<IdType> where IdType : struct
+    public class FilmeRepositorySqlServer<IdType> : IFilmeRepository<IdType> where IdType : struct
     {
         private readonly DynamicParameters _parameters = new DynamicParameters();
         private readonly SqlServerDataContext _dataContext;
 
-        public FilmeRepository(SqlServerDataContext dataContext)
+        public FilmeRepositorySqlServer(SqlServerDataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -44,12 +44,14 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
             _dataContext.SqlServerConexao.Execute(FilmeQueries.Excluir, _parameters);
         }
 
-        public IdType Inserir(Filme filme)
+        public Filme Inserir(Filme filme)
         {
             _parameters.Add("Titulo", filme.Titulo, DbType.String);
             _parameters.Add("Diretor", filme.Diretor, DbType.String);
 
-            return _dataContext.SqlServerConexao.ExecuteScalar<IdType>(FilmeQueries.Inserir, _parameters);
+            var id = _dataContext.SqlServerConexao.ExecuteScalar<IdType>(FilmeQueries.Inserir, _parameters);
+
+            return filme;
         }
 
         public List<FilmeQueryResult> Listar()

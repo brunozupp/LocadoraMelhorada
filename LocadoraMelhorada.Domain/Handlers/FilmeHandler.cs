@@ -8,9 +8,9 @@ namespace LocadoraMelhorada.Domain.Handlers
 {
     public class FilmeHandler : ICommandHandler<AdicionarFilmeCommand>, ICommandHandler<AtualizarFilmeCommand>, ICommandHandler<ExcluirFilmeCommand>
     {
-        private readonly IFilmeRepository<long> _repository;
+        private readonly IFilmeRepository<string> _repository;
 
-        public FilmeHandler(IFilmeRepository<long> repository)
+        public FilmeHandler(IFilmeRepository<string> repository)
         {
             _repository = repository;
         }
@@ -22,9 +22,9 @@ namespace LocadoraMelhorada.Domain.Handlers
 
             Filme filme = new Filme(command.Titulo, command.Diretor);
 
-            var id = _repository.Inserir(filme);
-
-            filme.AtualizarId(id);
+            filme = _repository.Inserir(filme);
+            //var id = _repository.Inserir(filme);
+            //filme.AtualizarId(id);
 
             return new FilmeCommandResult(true, "Filme cadastrado com sucesso!", filme);
         }

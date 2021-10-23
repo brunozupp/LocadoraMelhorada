@@ -10,12 +10,12 @@ using System.Linq;
 
 namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
 {
-    public class VotoRepository<IdType> : IVotoRepository<IdType> where IdType : struct
+    public class VotoRepositorySqlServer<IdType> : IVotoRepository<IdType> where IdType : struct
     {
         private readonly DynamicParameters _parameters = new DynamicParameters();
         private readonly SqlServerDataContext _dataContext;
 
-        public VotoRepository(SqlServerDataContext dataContext)
+        public VotoRepositorySqlServer(SqlServerDataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -34,12 +34,14 @@ namespace LocadoraMelhorada.Infra.Data.Repositories.SqlServer
             _dataContext.SqlServerConexao.Execute(VotoQueries.Excluir, _parameters);
         }
 
-        public IdType Inserir(Voto voto)
+        public Voto Inserir(Voto voto)
         {
             _parameters.Add("FilmeId", voto.FilmeId, DbType.Int64);
             _parameters.Add("UsuarioId", voto.UsuarioId, DbType.Int64);
 
-            return _dataContext.SqlServerConexao.ExecuteScalar<IdType>(VotoQueries.Inserir, _parameters);
+            _dataContext.SqlServerConexao.ExecuteScalar<IdType>(VotoQueries.Inserir, _parameters);
+
+            return voto;
         }
 
         public bool JaFoiVotado(IdType usuarioId, IdType filmeId)

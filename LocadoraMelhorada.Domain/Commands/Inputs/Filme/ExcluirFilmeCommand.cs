@@ -7,11 +7,11 @@ namespace LocadoraMelhorada.Domain.Commands.Inputs.Filme
     public class ExcluirFilmeCommand : Notifiable<Notification>, ICommandPadrao
     {
         [JsonIgnore]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public bool ValidarCommand()
         {
-            if (Id == 0)
+            if (string.IsNullOrWhiteSpace(Id))
                 AddNotification("Id", "Id precisa ser maior que 0");
 
             return IsValid;

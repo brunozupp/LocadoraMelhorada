@@ -1,18 +1,18 @@
 ﻿namespace LocadoraMelhorada.Domain.Entidades
 {
-    public class Voto : EntidadeBase<long>
+    public class Voto : EntidadeBase<string>
     {
-        public long UsuarioId { get; private set; }
+        public string UsuarioId { get; private set; }
 
-        public long FilmeId { get; private set; }
+        public string FilmeId { get; private set; }
 
-        public Voto(long usuarioId, long filmeId) : base()
+        public Voto(string usuarioId, string filmeId) : base()
         {
             UsuarioId = usuarioId;
             FilmeId = filmeId;
         }
 
-        public Voto(long id, long usuarioId, long filmeId) : base(id)
+        public Voto(string id, string usuarioId, string filmeId) : base(id)
         {
             UsuarioId = usuarioId;
             FilmeId = filmeId;

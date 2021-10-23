@@ -8,9 +8,9 @@ namespace LocadoraMelhorada.Domain.Handlers
 {
     public class UsuarioHandler : ICommandHandler<AdicionarUsuarioCommand>, ICommandHandler<AtualizarUsuarioCommand>, ICommandHandler<ExcluirUsuarioCommand>
     {
-        private readonly IUsuarioRepository<long> _repository;
+        private readonly IUsuarioRepository<string> _repository;
 
-        public UsuarioHandler(IUsuarioRepository<long> repository)
+        public UsuarioHandler(IUsuarioRepository<string> repository)
         {
             _repository = repository;
         }
@@ -22,9 +22,9 @@ namespace LocadoraMelhorada.Domain.Handlers
 
             Usuario usuario = new Usuario(command.Nome, command.Login, command.Senha);
 
-            var id = _repository.Inserir(usuario);
-
-            usuario.AtualizarId(id);
+            usuario = _repository.Inserir(usuario);
+            //var id = _repository.Inserir(usuario);
+            //usuario.AtualizarId(id);
 
             return new UsuarioCommandResult(true, "Usuário cadastrado com sucesso!", new
             {
